@@ -157,6 +157,6 @@ sudo certbot --nginx -d your_domain_name
 ## 🎉 Conclusion
 
 Congratulations, you've successfully set up a self-hosted Matomo Analytics platform on an Azure VM. You now have full control over your web analytics data, ensuring privacy and security.
-![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/93ee84f9-c38b-4a4f-bbfa-d94c6b529057)
+![gif](https://i.giphy.com/media/YnSTMd4T9BISZcHcAL/giphy.gif)
 
 Feel free to contribute and raise issues to make this guide even more comprehensive!
