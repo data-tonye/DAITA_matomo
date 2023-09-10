@@ -1,135 +1,162 @@
-# Self-hosted Web Analytics with Matomo and Azure
+# Comprehensive Guide to Self-Hosting Matomo Web Analytics on Azure
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Prerequisites](#prerequisites)
-- [Creating the Virtual Machine](#creating-the-virtual-machine)
-- [Configuring the Virtual Machine](#configuring-the-virtual-machine)
-- [Creating a Database](#creating-a-database)
-- [Installing Matomo](#installing-matomo)
-- [Installing Nginx and Configuring for Matomo](#installing-nginx-and-configuring-for-matomo)
-- [Installing a Let's Encrypt Certificate for SSL](#installing-a-lets-encrypt-certificate-for-ssl)
-- [Completing the Matomo Analytics Setup](#completing-the-matomo-analytics-setup)
+## 📚 Table of Contents
 
-## Introduction
-Matomo is an all-in-one premium web analytics platform with the philosophy of 100% data ownership. Simply stated, you own your data, no one else. That means that no abuse of privacy via Google Analytics, Facebook analytics or any other third-party website analytics software.
+- [🌟 Introduction](#-introduction)
+- [🛠 Prerequisites](#-prerequisites)
+- [🚀 Azure Virtual Machine Setup](#-azure-virtual-machine-setup)
+- [⚙️ Configuring the Virtual Machine](#-configuring-the-virtual-machine)
+- [📦 Database Creation](#-database-creation)
+- [🌐 Installing and Configuring Nginx](#-installing-and-configuring-nginx)
+- [📈 Download and Extract Matomo](#-download-and-extract-matomo)
+- [🔒 SSL Certificate Installation](#-ssl-certificate-installation)
+- [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
 
-Privacy has been a growing concern of mine and I'm starting, bit by bit, to take back some control of that and protect my end users from similar abuses. Be the change you want to see, so the saying goes.
+## 🌟 Introduction
 
-## Prerequisites
+Matomo is an open-source web analytics platform that offers 100% data ownership, avoiding data privacy issues commonly associated with third-party analytics services like Google Analytics. This guide aims to provide a step-by-step tutorial for setting up Matomo on an Azure Virtual Machine (VM). 
+
+## 🛠 Prerequisites
+
 - An Azure account
-- Access to SSH to configure our virtual machine which will be Linux-based (WSL, Linux, macOS, etc)
+- SSH client (WSL for Windows, terminal for macOS and Linux)
 
-## Creating the Virtual Machine
-1. Log into your Azure account and search for Free services.
-  ![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/abdce5f3-bb20-4f0e-b278-1ca7fcd27421)
+## 🚀 Azure Virtual Machine Setup
 
-2. Select the Linux Virtual Machine.
-   ![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/fc60505e-eb86-42ce-98a8-fb5f6921cab1)
+### Step 1: Launch Azure Portal
+- Open the Azure portal and sign in.
+  
+### Step 2: Create VM
+- Navigate to "Create a resource" > "Compute" > "Virtual Machine."
+  
+### Step 3: Configure VM
+- Fill in the necessary details to configure your VM. Choose 'Linux' as the operating system.
 
-3. Configure your virtual machine with your unique information.
-   ![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/f0dd0608-12d8-4ab8-9a2a-56be65354cc9)
+![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/1f7a74ff-527f-4f12-a1cb-57a3135eecb9)
 
-## Configuring the Virtual Machine
-SSH into your virtual machine by typing ssh [username]@[public IP address], replacing [username] with the username you specified in the creation of the virtual machine and then replacing [public IP address] with the public IP address of your virtual machine.
+## ⚙️ Configuring the Virtual Machine
 
-Once we're logged in update the virtual machine by running the following commands:
-```bash
-sudo apt install php php-cli php-fpm php-curl php-gd mysql-server php-mysql php-xml php-mbstring unzip -y
+### Step 1: SSH into VM
+- Open your SSH client and type:
+
+```
+ssh username@public_ip_address
+```
+Replace `username` and `public_ip_address` with your specific details.
+
+### Step 2: Update and Install Packages
+- Execute the following commands to update and install essential packages:
+
+```
 sudo apt update
 sudo apt upgrade -y
+sudo apt install php php-cli php-fpm php-curl php-gd mysql-server php-mysql php-xml php-mbstring unzip -y
 ```
-Now that we're updated to the latest version(s) of our virtual machines software we can continue onto the install.
 
+## 📦 Database Creation
 
-## Creating a Database
-Before you can run Matomo we will need to create a database for Matomo to use. Let's sign into our MySQL as our root user without any password.
+### Step 1: Login to MySQL
+- Login to MySQL as the root user.
+
 ```
 sudo mysql -u root -p
 ```
-Create a MySQL database and user for Matomo:
+
+### Step 2: Create Matomo Database and User
+- Execute the following SQL commands:
+
 ```
 CREATE DATABASE matomo;
-CREATE USER `username@example.com` IDENTIFIED BY 'your_secret_password';
-GRANT ALL ON matomo.* TO `username@example.com`;
+CREATE USER 'matomo_user'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON matomo.* TO 'matomo_user'@'localhost';
 FLUSH PRIVILEGES;
-exit
+EXIT;
 ```
 
-## Installing Matomo
-1. Install Nginx: `sudo apt install -y nginx`
-2. Configure Nginx for Matomo by creating a configuration file.
+## 🌐 Installing and Configuring Nginx
+
+### Step 1: Install Nginx
+- To install Nginx, run:
+
 ```
-   sudo nano /etc/nginx/sites-available/matomo.conf
+sudo apt install -y nginx
 ```
-3. Now we will need to populate the file with our server configurations. Obviously, change the server_name with your specific server name.
+
+### Step 2: Configure Nginx for Matomo
+- Create a new Nginx configuration file for Matomo:
+
 ```
-server {
-
-  listen [::]:443 ssl http2;
-  listen 443 ssl http2;
-  listen [::]:80;
-  listen 80;
-
-  server_name stats.fivethirtyfour.com;
-  root /var/www/matomo/;
-  index index.php;
-
-  location ~ ^/(index|matomo|piwik|js/index).php {
-    include snippets/fastcgi-php.conf;
-    fastcgi_param HTTP_PROXY ""; 
-    fastcgi_pass unix:/var/run/php/php7.3-fpm.sock; 
-  }
-
-  location = /plugins/HeatmapSessionRecording/configs.php {
-    include snippets/fastcgi-php.conf;
-    fastcgi_param HTTP_PROXY "";
-    fastcgi_pass unix:/var/run/php/php7.3-fpm.sock;
-  }
-
-  location ~* ^.+\.php$ {
-    deny all;
-    return 403;
-  }
-
-  location / {
-    try_files $uri $uri/ =404;
-  }
-
-  location ~ /(config|tmp|core|lang) {
-    deny all;
-    return 403;
-  }
-
-  location ~ \.(gif|ico|jpg|png|svg|js|css|htm|html|mp3|mp4|wav|ogg|avi|ttf|eot|woff|woff2|json)$ {
-    allow all;
-  }
-
-  location ~ /(libs|vendor|plugins|misc/user) {
-    deny all;
-    return 403;
-  }
-
-}
+sudo nano /etc/nginx/sites-available/matomo.conf
 ```
-4. Now we will need to activate the new matomo.conf configuration by linking the file to the sites-enabled directory.
 
-`sudo ln -s /etc/nginx/sites-available/matomo.conf /etc/nginx/sites-enabled`
+- Add the server configurations into this file. Make sure to replace `server_name` with your specific domain name.
 
-4. Test and reload the Nginx configuration.
+### Step 3: Activate Configuration
+- Link the file to `sites-enabled` and test the configuration:
+
 ```
+sudo ln -s /etc/nginx/sites-available/matomo.conf /etc/nginx/sites-enabled
 sudo nginx -t
 sudo systemctl reload nginx.service
 ```
 
-## Installing Nginx and Configuring for Matomo
-Follow the guide to install and configure Nginx specifically for Matomo.
+## 📈 Download and Extract Matomo
 
-## Installing a Let's Encrypt Certificate for SSL
-Install the required repositories and create a certificate using the Nginx certbot plugin.
+### Step 1: Create Web Server Directory
+- Create and navigate to the web server directory:
 
-## Completing the Matomo Analytics Setup
-Go through the Matomo installation process and configure it with the database information you created earlier.
+```
+sudo mkdir -p /var/www/ && cd /var/www/
+```
 
-## Conclusion
-Congratulations, you now have Matomo Analytics running on an Azure cloud instance!
+### Step 2: Download and Extract Matomo
+- Run these commands to download and extract Matomo:
+
+```
+wget https://builds.matomo.org/matomo.zip
+unzip matomo.zip
+rm matomo.zip
+```
+
+### Step 3: Change Ownership
+- Change the ownership of the Matomo directory:
+
+```
+sudo chown -R www-data:www-data /var/www/matomo
+```
+
+## 🔒 SSL Certificate Installation
+
+### Step 1: Install Certbot
+- Install the Certbot repositories and Certbot itself:
+
+```
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+sudo apt install certbot python-certbot-nginx -y
+```
+
+### Step 2: Generate SSL Certificate
+- Generate the SSL certificate using Certbot:
+
+```
+sudo certbot --nginx -d your_domain_name
+```
+
+- Now if we look at our /etc/nginx/sites-available/matomo.conf file we should see that certbot has added our SSL configurations for us.
+  
+## 🎯 Completing Matomo Analytics Setup
+
+- Open your web browser and go to your Matomo installation URL.
+- Follow Matomo's on-screen instructions.
+![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/014fa600-bf2f-41d7-a044-87b2a1757321)
+- When prompted, use the database details you set up earlier.
+![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/ab11880d-8a29-448d-813d-69058d1ad1d7)
+- Continue going through the configuration and once you get to the `Tracking code` section make sure you copy your tracking code snippet. This is what you will use to add to your website to gather the analytics information.
+
+## 🎉 Conclusion
+
+Congratulations, you've successfully set up a self-hosted Matomo Analytics platform on an Azure VM. You now have full control over your web analytics data, ensuring privacy and security.
+![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/93ee84f9-c38b-4a4f-bbfa-d94c6b529057)
+
+Feel free to contribute and raise issues to make this guide even more comprehensive!
