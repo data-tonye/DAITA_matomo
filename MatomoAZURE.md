@@ -10,6 +10,7 @@
 - [🌐 Installing and Configuring Nginx](#-installing-and-configuring-nginx)
 - [📈 Download and Extract Matomo](#-download-and-extract-matomo)
 - [🔒 SSL Certificate Installation](#-ssl-certificate-installation)
+- [🔄 Database Migration: From UVM WebDB to Azure VM](#-Database-Migration:-From-UVM-WebDB-to-Azure-VM)
 - [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
 
 ## 🌟 Introduction
@@ -153,6 +154,87 @@ sudo certbot --nginx -d your_domain_name
 - When prompted, use the database details you set up earlier.
 ![image](https://github.com/YYinBurgh/DAITA_matomo/assets/69682190/ab11880d-8a29-448d-813d-69058d1ad1d7)
 - Continue going through the configuration and once you get to the `Tracking code` section make sure you copy your tracking code snippet. This is what you will use to add to your website to gather the analytics information.
+
+## 🔄 Database Migration: From UVM WebDB to Azure VM
+
+Database migration can be a crucial task, especially when you're moving from one environment to another. This section will guide you through the process of migrating your existing Matomo database from UVM WebDB to your new Azure VM setup using phpMyAdmin.
+
+- Access to UVM WebDB with phpMyAdmin
+- Access to Azure VM's phpMyAdmin
+- SSH client for Azure VM
+
+### 🛠 Exporting Database from UVM WebDB
+
+#### Step 1: Log into UVM WebDB phpMyAdmin
+- Open your browser and navigate to the UVM WebDB phpMyAdmin URL.
+- Login using your UVM WebDB credentials.
+
+#### Step 2: Select the Database
+- From the left sidebar, click on the database that you wish to export.
+
+#### Step 3: Export the Database
+- Click on the `Export` tab at the top.
+- Choose the `Quick` method and the format as `SQL`, then click `Go`.
+- Save the exported SQL file on your local machine.
+
+### Importing Database to Azure VM
+
+#### Step 1: SSH into Azure VM
+- Open your SSH client and connect to your Azure VM:
+
+```
+ssh username@public_ip_address
+```
+
+#### Step 2: Install phpMyAdmin on Azure VM
+- If phpMyAdmin is not already installed, install it using:
+
+```
+sudo apt install phpmyadmin
+```
+
+#### Step 3: Access phpMyAdmin on Azure VM
+- Open your browser and navigate to your Azure VM phpMyAdmin URL.
+- Log in using your Azure MySQL credentials.
+
+#### Step 4: Create a New Database
+- Create a new database that will receive the imported data:
+
+```
+CREATE DATABASE new_matomo_db;
+```
+
+#### Step 5: Import the Database
+- Click on the new database you've created from the left sidebar.
+- Click on the `Import` tab at the top.
+- Choose the exported SQL file and click `Go`.
+
+### Finalizing the Migration
+
+#### Step 1: Update Matomo Configuration
+- Open your Matomo `config.ini.php` file:
+
+```
+sudo nano /var/www/matomo/config/config.ini.php
+```
+
+- Update the database credentials to match those of the new Azure VM database.
+
+#### Step 2: Clear Matomo Cache
+- Clear the Matomo cache to apply changes:
+
+```
+cd /var/www/matomo/tmp/
+sudo rm -rf cache/*
+```
+
+#### Step 3: Restart Services
+- Restart MySQL and Nginx to ensure all changes take effect:
+
+```
+sudo systemctl restart mysql
+sudo systemctl restart nginx
+```
 
 ## 🎉 Conclusion
 
