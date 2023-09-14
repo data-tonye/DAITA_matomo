@@ -12,7 +12,7 @@
 - [🔒 SSL Certificate Installation](#-ssl-certificate-installation)
 - [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
 - [🔄 Database Migration: From UVM WebDB to Azure VM](#-databasemigration-from-uvm-webdb-to-azure-vm)
-- [📨 Zoho Mail Account Creation and SMTP Integration with Matomo] (#-Zoho-Mail-Account-Creation-and-SMTP-Integration-with-Matomo)
+- [📨 Zoho Mail Account Creation and SMTP Integration with Matomo](#-Zoho-Mail-Account-Creation-and-SMTP-Integration-with-Matomo)
 
 ## 🌟 Introduction
 
