@@ -11,7 +11,8 @@
 - [📈 Download and Extract Matomo](#-download-and-extract-matomo)
 - [🔒 SSL Certificate Installation](#-ssl-certificate-installation)
 - [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
-- [🔄 Database Migration: From UVM WebDB to Azure VM](#-databasemigration:-from-uvm-webdb-to-azure-vm)
+- [🔄 Database Migration: From UVM WebDB to Azure VM](#-databasemigration-from-uvm-webdb-to-azure-vm)
+- [📨 Zoho Mail Account Creation and SMTP Integration with Matomo] (#-Zoho-Mail-Account-Creation-and-SMTP-Integration-with-Matomo)
 
 ## 🌟 Introduction
 
@@ -235,6 +236,42 @@ sudo rm -rf cache/*
 sudo systemctl restart mysql
 sudo systemctl restart nginx
 ```
+
+## 📨 Zoho Mail Account Creation and SMTP Integration with Matomo
+The step-by-step instructions for creating a Zoho Mail account and integrating it into Matomo via SMTP to enable email functionalities.
+
+### Creating a Zoho Mail Account
+1. Go to [Zoho Mail Signup](https://www.zoho.com/mail/signup.html) and select the FREE plan that suits your needs.
+2. Fill in the required details to create an account.
+3. Verify your email address and mobile number to activate the account.
+
+### Verifying the Domain
+1. Log in to your Zoho Mail account.
+2. Go to **Settings** > **Domains**.
+3. Add your domain and follow the on-screen instructions to verify it.
+
+### SMTP Settings in Zoho
+After verifying your domain, you can now get the SMTP details for integration. Zoho's SMTP settings are usually as follows:
+- SMTP Server: `smtp.zoho.com`
+- Port: `587` for TLS or `465` for SSL
+- Username: Your Zoho email address
+- Password: Your Zoho password (or an application-specific password if two-factor authentication is enabled)
+
+### Integrating Zoho SMTP with Matomo
+1. Log in to your Matomo dashboard.
+2. Go to **Settings** > **Email Server**.
+3. Fill in the SMTP details as follows:
+   - SMTP Server Address: `smtp.zoho.com`
+   - SMTP Port: `587`
+   - Authentication Method: `Login`
+   - SMTP Username: Your Zoho email address
+   - SMTP Password: Your Zoho password
+4. Click **Save Settings**.
+
+### Testing the Setup
+1. Try using the "Forgot Password" functionality to send a test email to yourself.
+2. Attempt to send an invitation to a new user.
+3. If both are successful, your setup is complete.
 
 ## 🎉 Conclusion
 
