@@ -10,8 +10,8 @@
 - [🌐 Installing and Configuring Nginx](#-installing-and-configuring-nginx)
 - [📈 Download and Extract Matomo](#-download-and-extract-matomo)
 - [🔒 SSL Certificate Installation](#-ssl-certificate-installation)
-- [🔄 Database Migration: From UVM WebDB to Azure VM](#-Database-Migration:-From-UVM-WebDB-to-Azure-VM)
 - [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
+- [🔄 Database Migration: From UVM WebDB to Azure VM](#-databasemigration:-from-uvm-webdb-to-azure-vm)
 
 ## 🌟 Introduction
 
@@ -163,7 +163,7 @@ Database migration can be a crucial task, especially when you're moving from one
 - Access to Azure VM's phpMyAdmin
 - SSH client for Azure VM
 
-### 🛠 Exporting Database from UVM WebDB
+### Exporting Database from UVM WebDB
 
 #### Step 1: Log into UVM WebDB phpMyAdmin
 - Open your browser and navigate to the UVM WebDB phpMyAdmin URL.
