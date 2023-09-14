@@ -11,8 +11,8 @@
 - [📈 Download and Extract Matomo](#-download-and-extract-matomo)
 - [🔒 SSL Certificate Installation](#-ssl-certificate-installation)
 - [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
-- [🔄 Database Migration: From UVM WebDB to Azure VM](#-databasemigration-from-uvm-webdb-to-azure-vm)
-- [📨 Zoho Mail Account Creation and SMTP Integration with Matomo](#-Zoho-Mail-Account-Creation-and-SMTP-Integration-with-Matomo)
+- [🔄 Database Migration: From UVM WebDB to Azure VM](#-database-migration-from-uvm-webdb-to-azure-vm)
+- [📨 Zoho Mail Account Creation and SMTP Integration with Matomo](#-zoho-mail-account-creation-and-smtp-integration-with-matomo)
 
 ## 🌟 Introduction
 
