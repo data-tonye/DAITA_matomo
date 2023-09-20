@@ -356,6 +356,7 @@ For support or to report issues, please file an issue on the GitHub repository.
 ## 🎉 Conclusion
 
 Congratulations, you've successfully set up a self-hosted Matomo Analytics platform on an Azure VM. You now have full control over your web analytics data, ensuring privacy and security.
+
 ![gif](https://i.giphy.com/media/YnSTMd4T9BISZcHcAL/giphy.gif)
 
 Feel free to contribute and raise issues to make this guide even more comprehensive!
