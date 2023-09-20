@@ -1,6 +1,6 @@
 # Comprehensive Guide to Self-Hosting Matomo Web Analytics on Azure
 
-## 📚 Table of Contents
+## Table of Contents
 
 - [🌟 Introduction](#-introduction)
 - [🛠 Prerequisites](#-prerequisites)
