@@ -13,6 +13,7 @@
 - [🎯 Completing Matomo Analytics Setup](#-completing-matomo-analytics-setup)
 - [🔄 Database Migration: From UVM WebDB to Azure VM](#-database-migration-from-uvm-webdb-to-azure-vm)
 - [📨 Zoho Mail Account Creation and SMTP Integration with Matomo](#-zoho-mail-account-creation-and-smtp-integration-with-matomo)
+- [🔄 Backup and Restore Using Azure Portal](#-Backup-and-Restore-Using-Azure-Portal)
 
 ## 🌟 Introduction
 
@@ -272,6 +273,48 @@ After verifying your domain, you can now get the SMTP details for integration. Z
 1. Try using the "Forgot Password" functionality to send a test email to yourself.
 2. Attempt to send an invitation to a new user.
 3. If both are successful, your setup is complete.
+
+## 🔄 Backup and Restore Using Azure Portal
+
+### Backup of Azure VM
+
+Backing up your Azure VM ensures that you can restore your system to a specific state whenever needed. Here's how to set up a backup:
+
+1. **Navigate to Azure Portal**: Open your Azure Portal and go to the Virtual Machines section.
+   
+2. **Select Your VM**: Choose the VM you want to back up.
+
+3. **Backup Option**: In the left sidebar, click on "Backup".
+
+4. **Configure Backup**: 
+    - **Recovery Services vault**: Create a new vault or use an existing one.
+    - **Backup Policy**: Choose an existing policy or create a new one to specify when backups should be taken.
+  
+5. **Enable Backup**: Click on "Enable Backup".
+
+6. **Initial Backup**: The initial backup will start based on the policy you've set. You can also manually trigger the backup.
+
+### Restore Azure VM
+
+Restoring your VM will bring it back to the state it was in at the time of a specific backup. Follow these steps to restore:
+
+1. **Navigate to Recovery Services Vault**: Open the Azure Portal and go to the "Recovery Services vaults" section. Select the vault containing your VM backup.
+
+2. **Backup Items**: Click on "Backup Items" under "Protected items".
+
+3. **Select VM**: Choose the VM you want to restore.
+
+4. **Restore VM**: 
+    - Click on "Restore VM" at the top.
+    - Select the recovery point you want to use for the restore operation.
+
+5. **Configure Restore**: 
+    - Choose to either create a new VM or replace an existing VM.
+    - Fill in the required details like VM name, Resource Group, Virtual Network, etc.
+
+6. **Trigger Restore**: Click on "Restore" to initiate the process.
+
+7. **Monitor Restore**: You can monitor the progress under the "Jobs" section in the Recovery Services vault.
 
 ## 🎉 Conclusion
 
