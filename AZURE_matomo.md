@@ -14,6 +14,11 @@
 - [🔄 Database Migration: From UVM WebDB to Azure VM](#-database-migration-from-uvm-webdb-to-azure-vm)
 - [📨 Zoho Mail Account Creation and SMTP Integration with Matomo](#-zoho-mail-account-creation-and-smtp-integration-with-matomo)
 - [🔄 Backup and Restore Using Azure Portal](#-Backup-and-Restore-Using-Azure-Portal)
+- [🔐 Security Measures](#-Security-Measures)
+- [🛠 Troubleshooting](#-Troubleshooting)
+- [📊 Using Matomo](#-Using-Matomo)
+- [📞 Support and Contact](#-Support-and-Contact)
+- [📚 References](#-References)
 
 ## 🌟 Introduction
 
@@ -316,6 +321,38 @@ Restoring your VM will bring it back to the state it was in at the time of a spe
 
 7. **Monitor Restore**: You can monitor the progress under the "Jobs" section in the Recovery Services vault.
 
+## 🔐 Security Measures
+
+To ensure the security of your Matomo installation and Azure VM, consider the following measures:
+
+- Enable Azure Security Center for threat protection.
+- Configure the firewall to allow only necessary ports (e.g., 80, 443 for web traffic).
+- Regularly update all packages and software to their latest versions.
+
+## 🛠 Troubleshooting
+
+### Common Issues
+
+- **Database Connection Errors**: Ensure your MySQL service is running and credentials are correct.
+- **Permission Issues**: Make sure the Matomo directory has the correct permissions.
+  
+## 📊 Using Matomo
+
+Once Matomo is set up, you can add the tracking code to your website by:
+
+1. Logging into your Matomo dashboard.
+2. Going to **Admin** > **Tracking Code**.
+3. Copying the JavaScript snippet and adding it to your website's HTML.
+
+## 📞 Support and Contact
+
+For support or to report issues, please file an issue on the GitHub repository.
+
+## 📚 References
+
+- [Matomo Official Documentation](https://matomo.org/docs/)
+- [Azure Documentation](https://docs.microsoft.com/en-us/azure/)
+  
 ## 🎉 Conclusion
 
 Congratulations, you've successfully set up a self-hosted Matomo Analytics platform on an Azure VM. You now have full control over your web analytics data, ensuring privacy and security.
