@@ -97,7 +97,58 @@ sudo apt install -y nginx
 sudo nano /etc/nginx/sites-available/matomo.conf
 ```
 
-- Add the server configurations into this file. Make sure to replace `server_name` with your specific domain name.
+- Add the server configurations to this file. Make sure to replace server_name `example.com` with your specific domain name.
+  
+```
+server {
+
+  #listen [::]:443 ssl http2;
+  #listen 443 ssl http2;
+  listen [::]:80;
+  listen 80;
+
+  server_name example.com;
+  root /var/www/matomo/;
+  index index.php;
+
+  location ~ ^/(index|matomo|piwik|js/index).php {
+    include snippets/fastcgi-php.conf;
+    fastcgi_param HTTP_PROXY ""; 
+    fastcgi_pass unix:/var/run/php/php8.1-fpm.sock; 
+  }
+
+  location = /plugins/HeatmapSessionRecording/configs.php {
+    include snippets/fastcgi-php.conf;
+    fastcgi_param HTTP_PROXY "";
+    fastcgi_pass unix:/var/run/php/php8.1-fpm.sock;
+  }
+
+  location ~* ^.+\.php$ {
+    deny all;
+    return 403;
+  }
+
+  location / {
+    try_files $uri $uri/ =404;
+  }
+
+  location ~ /(config|tmp|core|lang) {
+    deny all;
+    return 403;
+  }
+
+  location ~ \.(gif|ico|jpg|png|svg|js|css|htm|html|mp3|mp4|wav|ogg|avi|ttf|eot|woff|woff2|json)$ {
+    allow all;
+  }
+
+  location ~ /(libs|vendor|plugins|misc/user) {
+    deny all;
+    return 403;
+  }
+
+}
+
+```
 
 ### Step 3: Activate Configuration
 - Link the file to `sites-enabled` and test the configuration:
