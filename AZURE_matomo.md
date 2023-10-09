@@ -159,6 +159,24 @@ sudo nginx -t
 sudo systemctl reload nginx.service
 ```
 
+### If your nginx is not running
+- Check the status of the nginx
+```
+sudo systemctl status nginx.service
+```
+- If it is not running, you have to kill the PID process for the port 80
+  ```
+  sudo lsof -i :80
+  sudo kill <PID>
+  ```
+- Restart the nginx service
+```
+sudo systemctl start nginx
+sudo nginx -t
+sudo systemctl reload nginx.service
+sudo systemctl status nginx.service
+```
+
 ## 📈 Download and Extract Matomo
 
 ### Step 1: Create Web Server Directory
