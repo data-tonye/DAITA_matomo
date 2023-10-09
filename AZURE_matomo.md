@@ -190,9 +190,9 @@ sudo mkdir -p /var/www/ && cd /var/www/
 - Run these commands to download and extract Matomo:
 
 ```
-wget https://builds.matomo.org/matomo.zip
-unzip matomo.zip
-rm matomo.zip
+sudo wget https://builds.matomo.org/matomo.zip
+sudo unzip matomo.zip
+sudo rm matomo.zip
 ```
 
 ### Step 3: Change Ownership
@@ -210,7 +210,7 @@ sudo chown -R www-data:www-data /var/www/matomo
 ```
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt update
-sudo apt install certbot python-certbot-nginx -y
+sudo apt install certbot python3-certbot-nginx -y
 ```
 
 ### Step 2: Generate SSL Certificate
